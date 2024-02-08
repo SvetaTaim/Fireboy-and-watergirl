@@ -15,38 +15,41 @@ def load_image(name):
 class Fireboy(pygame.sprite.Sprite):
     image = load_image("fireboy.png")
 
-    def init(self, *group):
-        super().init(*group)
+    def __init__(self, *group):
+        super().__init__(*group)
         self.image = Fireboy.image
         self.rect = self.image.get_rect()
         self.rect.x = 0
         self.rect.y = 0
+        self.right = False
+        self.left = False
+        self.jump = False
+        self.coord = (0, 0)
 
-    def update(self, l=False, r=False, u=False):
-        if l:
-            self.rect.x -= STEP
-        if r:
-            self.rect.x += STEP
-        if u:
-            self.rect.y -= JUMP
-        #здесь надо будет дописывать движение огня, пока что просто реакция на кнопочки
+    def move(self):
+        if self.right:
+            self.coord = (self.coord[0] + SPEED, self.coord[1])
+        if self.left:
+            self.coord = (self.coord[0] - SPEED, self.coord[1])
+
 
 
 class Watergirl(pygame.sprite.Sprite):
     image = load_image("watergirl.png")
 
-    def init(self, *group):
-        super().init(*group)
+    def __init__(self, *group):
+        super().__init__(*group)
         self.image = Fireboy.image
         self.rect = self.image.get_rect()
         self.rect.x = 0
         self.rect.y = 0
+        self.right = False
+        self.left = False
+        self.jump = False
+        self.coord = (0, 0)
 
-    def update(self, l=False, r=False, u=False):
-        if l:
-            self.rect.x -= STEP
-        if r:
-            self.rect.x += STEP
-        if u:
-            self.rect.y -= JUMP
-        #здесь надо будет дописывать движение воды, пока что просто реакция на кнопочки
+    def move(self):
+        if self.right:
+            self.coord = (self.coord[0] + SPEED, self.coord[1])
+        if self.left:
+            self.coord = (self.coord[0] - SPEED, self.coord[1])

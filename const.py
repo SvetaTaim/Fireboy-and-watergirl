@@ -1,0 +1,2 @@
+SPEED = 2
+JUMP = 2
