@@ -3,17 +3,22 @@ import os
 import sys
 
 
+
 def load_image(name):
     fullname = os.path.join('data', name)
     if not os.path.isfile(fullname):
         print(f"Файл с изображением '{fullname}' не найден")
         sys.exit()
     image = pygame.image.load(fullname)
-    return image
+    h = 60
+    h1 = h / image.get_height()
+    w1 = image.get_width() * h1
+    image1 = pygame.transform.scale(image, (w1, h))
+    return image1
 
 
 class Fireboy(pygame.sprite.Sprite):
-    image = load_image("fireboy.png")
+    image = load_image("fireboy_stay1.png")
 
     def __init__(self, *group):
         super().__init__(*group)
@@ -35,13 +40,13 @@ class Fireboy(pygame.sprite.Sprite):
 
 
 class Watergirl(pygame.sprite.Sprite):
-    image = load_image("watergirl.png")
+    image = load_image("watergirl_stay1.png")
 
     def __init__(self, *group):
         super().__init__(*group)
-        self.image = Fireboy.image
+        self.image = Watergirl.image
         self.rect = self.image.get_rect()
-        self.rect.x = 0
+        self.rect.x = 100
         self.rect.y = 0
         self.right = False
         self.left = False
