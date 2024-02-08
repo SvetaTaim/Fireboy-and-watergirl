@@ -1,4 +1,8 @@
+import pygame
+import pytmx
 from level import Fireboy_and_Watergirl
+from const import WINDOW_SIZE, WINDOW_WIDTH, WINDOW_HEIGHT, FPS, MAPS_DIR, TILE_SIZE
+
 
 if __name__ == '__main__':
     pygame.init()

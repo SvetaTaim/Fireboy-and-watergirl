@@ -1,10 +1,6 @@
 import pygame
 import pytmx
-
-WINDOW_SIZE = WINDOW_WIDTH, WINDOW_HEIGHT = 640, 640
-FPS = 15
-MAPS_DIR = "maps"
-TILE_SIZE = 32
+from const import WINDOW_SIZE, WINDOW_WIDTH, WINDOW_HEIGHT, FPS, MAPS_DIR, TILE_SIZE
 
 
 class Fireboy_and_Watergirl:
