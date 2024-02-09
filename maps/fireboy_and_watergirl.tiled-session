@@ -21,19 +21,38 @@
             "scaleInDock": 1,
             "scaleInEditor": 1
         },
+        "main_window.tmx": {
+            "expandedObjectLayers": [
+                2
+            ],
+            "scale": 1,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 272.5,
+                "y": 336.5
+            }
+        },
+        "main_window_2.tmx": {
+            "scale": 1,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 325.5,
+                "y": 326.5
+            }
+        },
         "map1.tmx": {
             "scale": 1,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 318.5,
-                "y": 318.5
+                "x": 317,
+                "y": 317.5
             }
         },
         "map2.tmx": {
             "scale": 1.27953125,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 353.64513371596047,
+                "x": 315.74062767126634,
                 "y": 318.4760043961412
             }
         },
@@ -41,7 +60,7 @@
             "scale": 1.27953125,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 318.4760043961412,
+                "x": 318.0852362925877,
                 "y": 319.2575406032483
             }
         },
@@ -49,10 +68,16 @@
             "dynamicWrapping": false,
             "scaleInDock": 1,
             "scaleInEditor": 1
+        },
+        "Безымянный.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
         }
     },
+    "last.exportedFilePath": "C:/Users/Лисин Николай/PycharmProjects/game/maps",
     "last.externalTilesetPath": "C:/Projects/GameProject/maps",
-    "last.imagePath": "C:/Projects/GameProject/maps",
+    "last.imagePath": "C:/Users/Лисин Николай/PycharmProjects/game/maps",
+    "map.lastUsedExportFilter": "Все файлы (*)",
     "map.lastUsedFormat": "tmx",
     "map.layerDataFormat": null,
     "map.width": 20,
@@ -64,8 +89,11 @@
     ],
     "project": "fireboy_and_watergirl.tiled-project",
     "recentFiles": [
-        "map1.tmx",
+        "main_window.tmx",
+        "main_window_2.tmx",
+        "Безымянный.tsx",
         "tiles.tsx",
+        "map1.tmx",
         "map2.tmx",
         "map3.tmx",
         "444.tsx",

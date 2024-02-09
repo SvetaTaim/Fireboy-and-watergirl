@@ -1,6 +1,6 @@
 import pygame
 import pytmx
-from const import WINDOW_SIZE, WINDOW_WIDTH, WINDOW_HEIGHT, FPS, MAPS_DIR, TILE_SIZE
+from const import *
 
 
 class Fireboy_and_Watergirl:
