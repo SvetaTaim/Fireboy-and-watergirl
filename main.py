@@ -21,13 +21,14 @@ if __name__ == '__main__':
             if event.type == pygame.QUIT:
                 running = False
             if event.type == pygame.MOUSEBUTTONDOWN:
-                if 128 <= event.pos[0] <= 480:
-                    if 224 <= event.pos[1] < 320:
-                        change_level = 1
-                    elif 320 <= event.pos[1] < 416:
-                        change_level = 2
-                    elif 416 <= event.pos[1] <= 512:
-                        change_level = 3
+                if not change_level:
+                    if 128 <= event.pos[0] <= 480:
+                        if 224 <= event.pos[1] < 320:
+                            change_level = 1
+                        elif 320 <= event.pos[1] < 416:
+                            change_level = 2
+                        elif 416 <= event.pos[1] <= 512:
+                            change_level = 3
             if change_level:
                 fb_wg = Fireboy_and_Watergirl(f"map{change_level}.tmx", [10, 46], 20)
                 pygame.display.flip()
