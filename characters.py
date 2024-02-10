@@ -41,7 +41,6 @@ class Fireboy(pygame.sprite.Sprite):
         if not self.ground:
             self.rect.y += GRAVITY
 
-
     def draw(self, screen):
         screen.blit(self.image, self.rect)
 
