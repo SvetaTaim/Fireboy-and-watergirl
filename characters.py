@@ -19,60 +19,57 @@ def load_image(name):
 class Fireboy(pygame.sprite.Sprite):
     image = load_image("fireboy_stay1.png")
 
-    def __init__(self, *group):
-        super().__init__(*group)
+    def __init__(self, x, y):
+        super().__init__()
         self.image = Fireboy.image
         self.rect = self.image.get_rect()
-        self.rect.x = 0
-        self.rect.y = 0
+        self.rect.x = x
+        self.rect.y = y
         self.right = False
         self.left = False
         self.jump = False
+        self.ground = False
         self.coord = (0, 0)
-
-    def key_reaction(self):
-        for event in pygame.event.get():
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_RIGHT:
-                    self.right = True
-                if event.key == pygame.K_LEFT:
-                    self.left = True
-                if event.key == pygame.K_UP:
-                    pass
 
     def move(self):
         if self.right:
             self.coord = (self.coord[0] + SPEED, self.coord[1])
         if self.left:
             self.coord = (self.coord[0] - SPEED, self.coord[1])
+        if self.jump:
+            if self.ground:
+                self.coord = (self.coord[0], self.coord[1] - JUMP)
+        if not self.ground:
+            self.coord = (self.coord[0], self.coord[1] + GRAVITY)
 
 
 class Watergirl(pygame.sprite.Sprite):
     image = load_image("watergirl_stay1.png")
 
-    def __init__(self, *group):
-        super().__init__(*group)
+    def __init__(self, x, y):
+        super().__init__()
         self.image = Watergirl.image
         self.rect = self.image.get_rect()
-        self.rect.x = 100
-        self.rect.y = 0
+        self.rect.x = x
+        self.rect.y = y
         self.right = False
         self.left = False
         self.jump = False
+        self.ground = False
         self.coord = (0, 0)
-
-    def key_reaction(self):
-        for event in pygame.event.get():
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_s:
-                    self.right = True
-                if event.key == pygame.K_a:
-                    self.left = True
-                if event.key == pygame.K_w:
-                    pass
 
     def move(self):
         if self.right:
             self.coord = (self.coord[0] + SPEED, self.coord[1])
         if self.left:
             self.coord = (self.coord[0] - SPEED, self.coord[1])
+        if self.jump:
+            if self.ground:
+                self.coord = (self.coord[0], self.coord[1] - JUMP)
+        if not self.ground:
+            self.coord = (self.coord[0], self.coord[1] + GRAVITY)
+
+    def draw(self, screen):
+        screen.blit(self.image, self.coord)
+
+

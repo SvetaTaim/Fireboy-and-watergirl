@@ -7,14 +7,15 @@ from level import Fireboy_and_Watergirl
 if __name__ == '__main__':
     pygame.init()
     screen = pygame.display.set_mode(WINDOW_SIZE)
+    pygame.display.set_caption('Огонь и вода')
     fb_wg = Fireboy_and_Watergirl("main_window.tmx", [10, 46], 20)
     change_level = 0
     clock = pygame.time.Clock()
     all_sprites = pygame.sprite.Group()
-    boy = Fireboy()
-    girl = Watergirl()
-    all_sprites.add(boy)
+    boy = Fireboy(100, 100)
+    girl = Watergirl(200, 200)
     all_sprites.add(girl)
+    all_sprites.add(boy)
     running = True
     while running:
         for event in pygame.event.get():
@@ -31,8 +32,35 @@ if __name__ == '__main__':
                             change_level = 3
             if change_level:
                 fb_wg = Fireboy_and_Watergirl(f"map{change_level}.tmx", [10, 46], 20)
-                pygame.display.flip()
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_RIGHT:
+                        boy.right = True
+                    if event.key == pygame.K_LEFT:
+                        boy.left = True
+                    if event.key == pygame.K_UP:
+                        boy.jump = True
+                    if event.key == pygame.K_s:
+                        girl.right = True
+                    if event.key == pygame.K_a:
+                        girl.left = True
+                    if event.key == pygame.K_w:
+                        girl.jump = True
+                if event.type == pygame.KEYUP:
+                    if event.key == pygame.K_RIGHT:
+                        boy.right = False
+                    if event.key == pygame.K_LEFT:
+                        boy.left = False
+                    if event.key == pygame.K_UP:
+                        boy.jump = False
+                    if event.key == pygame.K_s:
+                        girl.right = False
+                    if event.key == pygame.K_a:
+                        girl.left = False
+                    if event.key == pygame.K_w:
+                        girl.jump = False
+
         fb_wg.render(screen)
+        all_sprites.update()
         all_sprites.draw(screen)
         pygame.display.flip()
         clock.tick(FPS)
