@@ -3,7 +3,6 @@ import os
 import sys
 
 
-
 def load_image(name):
     fullname = os.path.join('data', name)
     if not os.path.isfile(fullname):
@@ -31,12 +30,21 @@ class Fireboy(pygame.sprite.Sprite):
         self.jump = False
         self.coord = (0, 0)
 
+    def key_reaction(self):
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_RIGHT:
+                    self.right = True
+                if event.key == pygame.K_LEFT:
+                    self.left = True
+                if event.key == pygame.K_UP:
+                    pass
+
     def move(self):
         if self.right:
             self.coord = (self.coord[0] + SPEED, self.coord[1])
         if self.left:
             self.coord = (self.coord[0] - SPEED, self.coord[1])
-
 
 
 class Watergirl(pygame.sprite.Sprite):
@@ -52,6 +60,16 @@ class Watergirl(pygame.sprite.Sprite):
         self.left = False
         self.jump = False
         self.coord = (0, 0)
+
+    def key_reaction(self):
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_s:
+                    self.right = True
+                if event.key == pygame.K_a:
+                    self.left = True
+                if event.key == pygame.K_w:
+                    pass
 
     def move(self):
         if self.right:
