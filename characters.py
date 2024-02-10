@@ -1,7 +1,7 @@
 import pygame
 import os
 import sys
-
+from const import *
 
 def load_image(name):
     fullname = os.path.join('data', name)
@@ -29,18 +29,21 @@ class Fireboy(pygame.sprite.Sprite):
         self.left = False
         self.jump = False
         self.ground = False
-        self.coord = (0, 0)
 
-    def move(self):
+    def update(self):
         if self.right:
-            self.coord = (self.coord[0] + SPEED, self.coord[1])
+            self.rect.x += SPEED
         if self.left:
-            self.coord = (self.coord[0] - SPEED, self.coord[1])
+            self.rect.x -= SPEED
         if self.jump:
             if self.ground:
-                self.coord = (self.coord[0], self.coord[1] - JUMP)
+                self.rect.y -= JUMP
         if not self.ground:
-            self.coord = (self.coord[0], self.coord[1] + GRAVITY)
+            self.rect.y += GRAVITY
+
+
+    def draw(self, screen):
+        screen.blit(self.image, self.rect)
 
 
 class Watergirl(pygame.sprite.Sprite):
@@ -48,7 +51,6 @@ class Watergirl(pygame.sprite.Sprite):
 
     def __init__(self, x, y):
         super().__init__()
-        self.image = Watergirl.image
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
@@ -56,20 +58,19 @@ class Watergirl(pygame.sprite.Sprite):
         self.left = False
         self.jump = False
         self.ground = False
-        self.coord = (0, 0)
 
-    def move(self):
+    def update(self):
         if self.right:
-            self.coord = (self.coord[0] + SPEED, self.coord[1])
+            self.rect.x += SPEED
         if self.left:
-            self.coord = (self.coord[0] - SPEED, self.coord[1])
+            self.rect.x -= SPEED
         if self.jump:
             if self.ground:
-                self.coord = (self.coord[0], self.coord[1] - JUMP)
+                self.rect.y -= JUMP
         if not self.ground:
-            self.coord = (self.coord[0], self.coord[1] + GRAVITY)
+            self.rect.y += GRAVITY
 
     def draw(self, screen):
-        screen.blit(self.image, self.coord)
+        screen.blit(self.image, self.rect)
 
 

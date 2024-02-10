@@ -30,38 +30,40 @@ if __name__ == '__main__':
                             change_level = 2
                         elif 416 <= event.pos[1] <= 512:
                             change_level = 3
-            if change_level:
-                fb_wg = Fireboy_and_Watergirl(f"map{change_level}.tmx", [10, 46], 20)
-                if event.type == pygame.KEYDOWN:
+            if event.type == pygame.KEYDOWN:
+                if change_level:
                     if event.key == pygame.K_RIGHT:
                         boy.right = True
                     if event.key == pygame.K_LEFT:
                         boy.left = True
                     if event.key == pygame.K_UP:
                         boy.jump = True
-                    if event.key == pygame.K_s:
+                    if event.key == pygame.K_d:
                         girl.right = True
                     if event.key == pygame.K_a:
                         girl.left = True
                     if event.key == pygame.K_w:
                         girl.jump = True
-                if event.type == pygame.KEYUP:
+            if event.type == pygame.KEYUP:
+                if change_level:
                     if event.key == pygame.K_RIGHT:
                         boy.right = False
                     if event.key == pygame.K_LEFT:
                         boy.left = False
                     if event.key == pygame.K_UP:
                         boy.jump = False
-                    if event.key == pygame.K_s:
+                    if event.key == pygame.K_d:
                         girl.right = False
                     if event.key == pygame.K_a:
                         girl.left = False
                     if event.key == pygame.K_w:
                         girl.jump = False
-
+            if change_level:
+                fb_wg = Fireboy_and_Watergirl(f"map{change_level}.tmx", [10, 46], 20)
         fb_wg.render(screen)
-        all_sprites.update()
-        all_sprites.draw(screen)
+        if change_level:
+            all_sprites.update()
+            all_sprites.draw(screen)
         pygame.display.flip()
         clock.tick(FPS)
     pygame.quit()
