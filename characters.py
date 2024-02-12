@@ -13,6 +13,7 @@ def load_image(name):
     h1 = h / image.get_height()
     w1 = image.get_width() * h1
     image1 = pygame.transform.scale(image, (w1, h))
+    image1.set_colorkey((255, 255, 255))
     return image1
 
 
@@ -46,7 +47,7 @@ class Fireboy(pygame.sprite.Sprite):
 
 
 class Watergirl(pygame.sprite.Sprite):
-    image = load_image("watergirl_stay1.png")
+    image = load_image("watergirl_stay2.png")
 
     def __init__(self, x, y):
         super().__init__()
