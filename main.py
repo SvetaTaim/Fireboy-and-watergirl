@@ -8,8 +8,8 @@ if __name__ == '__main__':
     pygame.init()
     screen = pygame.display.set_mode(WINDOW_SIZE)
     pygame.display.set_caption('Огонь и вода')
-    #screen.blit(pytmx.load_pygame('maps/main_window.tmx'))
-    screen.fill((255, 255, 255)) # Мила, придумай, как открывать начальную картинку. Я пока ее просто убрала, чтобы код заработал
+    screen.fill((255, 255,
+                 255))  # Мила, придумай, как открывать начальную картинку. Я пока ее просто убрала, чтобы код заработал
     # Герои пока остаются на поле линией, потому что надо сделать нормально fb_wg. Я не совсем понимаю, что это, поэтому надеюсь на тебя
     clock = pygame.time.Clock()
     all_sprites = pygame.sprite.Group()
@@ -60,9 +60,10 @@ if __name__ == '__main__':
                         girl.left = False
                     if event.key == pygame.K_w:
                         girl.jump = False
-            if change_level:
-                fb_wg = Fireboy_and_Watergirl(f"map{change_level}.txt", [10, 46], 20)
-                fb_wg.render(screen)
+        # Убрала отрисовку уровня из цикла, исчезли остаточные изображения, подняла FPS, чтобы двигались плавнее
+        if change_level:
+            fb_wg = Fireboy_and_Watergirl(f"map{change_level}.txt", [10, 46], 20)
+            fb_wg.render(screen)
         if change_level:
             all_sprites.update()
             all_sprites.draw(screen)
