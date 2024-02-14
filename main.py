@@ -6,6 +6,7 @@ from level import Fireboy_and_Watergirl
 if __name__ == '__main__':
     pygame.init()
     screen = pygame.display.set_mode(WINDOW_SIZE)
+    screen_back = pygame.Surface(WINDOW_SIZE)
     pygame.display.set_caption('Огонь и вода')
     screen.fill((255, 255, 255))  # Мила, придумай, как открывать начальную картинку. Я пока ее просто убрала, чтобы код заработал
     # Герои пока остаются на поле линией, потому что надо сделать нормально fb_wg. Я не совсем понимаю, что это, поэтому надеюсь на тебя
@@ -15,7 +16,8 @@ if __name__ == '__main__':
     girl = Watergirl(200, 200)
     all_sprites.add(girl)
     all_sprites.add(boy)
-    tiles = []
+    tiles = pygame.sprite.Group()
+    game_on = False
     change_level = 0
     running = True
     while running:
@@ -32,7 +34,7 @@ if __name__ == '__main__':
                         elif 416 <= event.pos[1] <= 512:
                             change_level = 3
             if event.type == pygame.KEYDOWN:
-                if change_level:
+                if game_on:
                     if event.key == pygame.K_RIGHT:
                         boy.right = True
                     if event.key == pygame.K_LEFT:
@@ -46,7 +48,7 @@ if __name__ == '__main__':
                     if event.key == pygame.K_w:
                         girl.jump = True
             if event.type == pygame.KEYUP:
-                if change_level:
+                if game_on:
                     if event.key == pygame.K_RIGHT:
                         boy.right = False
                     if event.key == pygame.K_LEFT:
@@ -62,8 +64,13 @@ if __name__ == '__main__':
         # Убрала отрисовку уровня из цикла, исчезли остаточные изображения, подняла FPS, чтобы двигались плавнее
         if change_level:
             fb_wg = Fireboy_and_Watergirl(f"map{change_level}.txt", [10, 46], 20)
-            fb_wg.render(screen,all_sprites, tiles)
-        if change_level:
+            fb_wg.render(screen_back, tiles)
+            tiles.draw(screen_back)
+            game_on = True
+            change_level = False
+        if game_on:
+            screen.fill((0, 0, 0))
+            screen.blit(screen_back, (0, 0))
             all_sprites.update(tiles)
             all_sprites.draw(screen)
         pygame.display.flip()

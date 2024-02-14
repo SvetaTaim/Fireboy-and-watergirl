@@ -20,15 +20,14 @@ class Fireboy_and_Watergirl:
         self.free_tiles = free_tiles
         self.finish_tile = finish_tile
 
-    def render(self, screen, all_sprites, tiles):
+    def render(self, screen, tiles):
         for y in range(len(self.map)):
             for x in range(len(self.map[0]) - 1):
                 if self.map[y][x] == '#':
                     tile = Tiles(x * TILE_SIZE, y * TILE_SIZE)
-                    all_sprites.add(tile)
-                    tiles.append(tile)
+                    tiles.add(tile)
                 else:
-                    screen.blit(self.background, (x * TILE_SIZE, y * TILE_SIZE))
+                    screen.blit(pygame.transform.scale(self.background, (TILE_SIZE, TILE_SIZE)), (x * TILE_SIZE, y * TILE_SIZE))
 
 
     def get_tile_id(self, position):

@@ -91,12 +91,13 @@ class Watergirl(pygame.sprite.Sprite):
         self.rect.y += self.deltay
         self.collide(tiles)
 
+
     def collide(self, tiles):
         for tile in tiles:
             if pygame.sprite.collide_rect(self, tile):
-                if self.right:
+                if self.right and self.rect.right >= tile.rect.left:
                     self.deltax -= SPEED
-                if self.left:
+                if self.left and self.rect.left <= tile.rect.left:
                     self.deltax += SPEED
                 if self.jump:
                     self.deltay += JUMP
@@ -111,7 +112,7 @@ class Tiles(pygame.sprite.Sprite):
     def __init__(self, x, y):
         super().__init__()
         self.rect = pygame.Rect(x, y, TILE_SIZE, TILE_SIZE)
-        self.image = Tiles.image
+        self.image = pygame.transform.scale(self.image, (TILE_SIZE, TILE_SIZE))
 
     def update(self, *args):
         pass
