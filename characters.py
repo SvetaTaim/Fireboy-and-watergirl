@@ -30,20 +30,35 @@ class Fireboy(pygame.sprite.Sprite):
         self.left = False
         self.jump = False
         self.ground = False
+        self.deltax = 0
+        self.deltay = 0
 
-    def update(self):
+    def update(self, tiles):
         if self.right:
-            self.rect.x += SPEED
+            self.deltax += SPEED
         if self.left:
-            self.rect.x -= SPEED
+            self.deltax -= SPEED
         if self.jump:
             if self.ground:
-                self.rect.y -= JUMP
+                self.deltay -= JUMP
         if not self.ground:
-            self.rect.y += GRAVITY
+            self.deltay += GRAVITY
+        self.rect.x += self.deltax
+        self.rect.y += self.deltay
+        self.collide(tiles)
 
-    def draw(self, screen):
-        screen.blit(self.image, self.rect)
+    def collide(self, tiles):
+        for tile in tiles:
+            if pygame.sprite.collide_rect(self, tile):
+                if self.right:
+                    self.rect.x -= SPEED
+                if self.left:
+                    self.rect.x += SPEED
+                if self.jump:
+                    self.rect.y += JUMP
+                if not self.ground:
+                    self.ground = True
+                    self.rect.bottom = tile.rect.top
 
 
 class Watergirl(pygame.sprite.Sprite):
@@ -58,17 +73,45 @@ class Watergirl(pygame.sprite.Sprite):
         self.left = False
         self.jump = False
         self.ground = False
+        self.deltax = 0
+        self.deltay = 0
 
-    def update(self):
+
+    def update(self, tiles):
         if self.right:
-            self.rect.x += SPEED
+            self.deltax += SPEED
         if self.left:
-            self.rect.x -= SPEED
+            self.deltax -= SPEED
         if self.jump:
             if self.ground:
-                self.rect.y -= JUMP
+                self.deltay -= JUMP
         if not self.ground:
-            self.rect.y += GRAVITY
+            self.deltay += GRAVITY
+        self.rect.x += self.deltax
+        self.rect.y += self.deltay
+        self.collide(tiles)
 
-    def draw(self, screen):
-        screen.blit(self.image, self.rect)
+    def collide(self, tiles):
+        for tile in tiles:
+            if pygame.sprite.collide_rect(self, tile):
+                if self.right:
+                    self.deltax -= SPEED
+                if self.left:
+                    self.deltax += SPEED
+                if self.jump:
+                    self.deltay += JUMP
+                if not self.ground:
+                    self.ground = True
+                    self.rect.bottom = tile.rect.top
+
+
+class Tiles(pygame.sprite.Sprite):
+    image = load_image('wall.png')
+
+    def __init__(self, x, y):
+        super().__init__()
+        self.rect = pygame.Rect(x, y, TILE_SIZE, TILE_SIZE)
+        self.image = Tiles.image
+
+    def update(self, *args):
+        pass
