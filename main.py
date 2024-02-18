@@ -61,7 +61,6 @@ if __name__ == '__main__':
                         girl.left = False
                     if event.key == pygame.K_w:
                         girl.jump = False
-        # Убрала отрисовку уровня из цикла, исчезли остаточные изображения, подняла FPS, чтобы двигались плавнее
         if change_level:
             fb_wg = Fireboy_and_Watergirl(f"map{change_level}.txt", [10, 46], 20)
             fb_wg.render(screen_back, tiles)
