@@ -15,11 +15,16 @@ def load_image(name):
 
 
 class Fireboy(pygame.sprite.Sprite):
-    image = load_image("fireboy_stay1.png")
+    image_stay1 = load_image("fireboy_stay1.png")
+    image_stay2 = load_image('fireboy_stay2.png')
+    image_right1 = load_image('fireboy_right1.png')
+    image_right2 = load_image('fireboy_right2.png')
+    image_left1 = load_image('fireboy_left1.png')
+    image_left2 = load_image('fireboy_left2.png')
 
     def __init__(self, x, y):
         super().__init__()
-        self.image = Fireboy.image
+        self.image = Fireboy.image_stay1
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
@@ -33,10 +38,22 @@ class Fireboy(pygame.sprite.Sprite):
     def update(self, tiles):
         if self.right:
             self.deltax = SPEED
+            if self.image != Fireboy.image_right1:
+                self.image = Fireboy.image_right1
+            else:
+                self.image = Fireboy.image_right2
         if self.left:
             self.deltax = -SPEED
+            if self.image != Fireboy.image_left1:
+                self.image = Fireboy.image_left1
+            else:
+                self.image = Fireboy.image_left2
         if not (self.left or self.right):
             self.deltax = 0
+            if self.image != Fireboy.image_stay1:
+                self.image = Fireboy.image_stay1
+            else:
+                self.image = Fireboy.image_stay2
         if self.jump:
             if self.ground:
                 self.deltay -= JUMP
@@ -64,10 +81,16 @@ class Fireboy(pygame.sprite.Sprite):
                     self.deltay = 0
 
 class Watergirl(pygame.sprite.Sprite):
-    image = load_image("watergirl_stay2.png")
+    image_stay1 = load_image("watergirl_stay1.png")
+    image_stay2 = load_image('watergirl_stay2.png')
+    image_right1 = load_image('watergirl_right1.png')
+    image_right2 = load_image('watergirl_right2.png')
+    image_left1 = load_image('watergirl_left1.png')
+    image_left2 = load_image('watergirl_left2.png')
 
     def __init__(self, x, y):
         super().__init__()
+        self.image = Watergirl.image_stay1
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
@@ -82,10 +105,22 @@ class Watergirl(pygame.sprite.Sprite):
     def update(self, tiles):
         if self.right:
             self.deltax = SPEED
+            if self.image != Watergirl.image_right1:
+                self.image = Watergirl.image_right1
+            else:
+                self.image = Watergirl.image_right2
         if self.left:
             self.deltax = -SPEED
+            if self.image != Watergirl.image_left1:
+                self.image = Watergirl.image_left1
+            else:
+                self.image = Watergirl.image_left2
         if not (self.left or self.right):
             self.deltax = 0
+            if self.image != Watergirl.image_stay1:
+                self.image = Watergirl.image_stay1
+            else:
+                self.image = Watergirl.image_stay2
         if self.jump:
             if self.ground:
                 self.deltay -= JUMP
