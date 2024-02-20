@@ -19,8 +19,10 @@ class Fireboy(pygame.sprite.Sprite):
     image_stay2 = load_image('fireboy_stay2.png')
     image_right1 = load_image('fireboy_right1.png')
     image_right2 = load_image('fireboy_right2.png')
-    image_left1 = load_image('fireboy_left1.png')
-    image_left2 = load_image('fireboy_left2.png')
+    image_left1 = pygame.transform.flip(image_right1, True, False)
+    image_left1.set_colorkey((255, 255, 255))
+    image_left2 = pygame.transform.flip(image_right2, True, False)
+    image_left2.set_colorkey((255, 255, 255))
 
     def __init__(self, x, y):
         super().__init__()
@@ -67,7 +69,7 @@ class Fireboy(pygame.sprite.Sprite):
 
     def collide(self, deltax, deltay, tiles):
         for tile in tiles:
-            if pygame.sprite.collide_rect(self, tile):
+            if pygame.sprite.collide_mask(self, tile):
                 if deltax > 0:
                     self.rect.right = tile.rect.left
                 if deltax < 0:
@@ -85,8 +87,10 @@ class Watergirl(pygame.sprite.Sprite):
     image_stay2 = load_image('watergirl_stay2.png')
     image_right1 = load_image('watergirl_right1.png')
     image_right2 = load_image('watergirl_right2.png')
-    image_left1 = load_image('watergirl_left1.png')
-    image_left2 = load_image('watergirl_left2.png')
+    image_left1 = pygame.transform.flip(image_right1, True, False)
+    image_left1.set_colorkey((255, 255, 255))
+    image_left2 = pygame.transform.flip(image_right2, True, False)
+    image_left2.set_colorkey((255, 255, 255))
 
     def __init__(self, x, y):
         super().__init__()
@@ -134,7 +138,7 @@ class Watergirl(pygame.sprite.Sprite):
 
     def collide(self, deltax, deltay, tiles):
         for tile in tiles:
-            if pygame.sprite.collide_rect(self, tile):
+            if pygame.sprite.collide_mask(self, tile):
                 if deltax > 0:
                     self.rect.right = tile.rect.left
                 if deltax < 0:
