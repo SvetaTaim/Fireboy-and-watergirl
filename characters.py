@@ -3,22 +3,23 @@ import os
 import sys
 from const import *
 
-def load_image(name):
+
+def load_image(name, size, colorkey):
     fullname = os.path.join('data', name)
     if not os.path.isfile(fullname):
         print(f"Файл с изображением '{fullname}' не найден")
         sys.exit()
     image = pygame.image.load(fullname)
-    image1 = pygame.transform.scale(image, CHARACTER_SIZE)
-    image1.set_colorkey((255, 255, 255))
+    image1 = pygame.transform.scale(image, size)
+    image1.set_colorkey(colorkey)
     return image1
 
 
 class Fireboy(pygame.sprite.Sprite):
-    image_stay1 = load_image("fireboy_stay1.png")
-    image_stay2 = load_image('fireboy_stay2.png')
-    image_right1 = load_image('fireboy_right1.png')
-    image_right2 = load_image('fireboy_right2.png')
+    image_stay1 = load_image("fireboy_stay1.png", CHARACTER_SIZE, (255, 255, 255))
+    image_stay2 = load_image('fireboy_stay2.png', CHARACTER_SIZE, (255, 255, 255))
+    image_right1 = load_image('fireboy_right1.png', CHARACTER_SIZE, (255, 255, 255))
+    image_right2 = load_image('fireboy_right2.png', CHARACTER_SIZE, (255, 255, 255))
     image_left1 = pygame.transform.flip(image_right1, True, False)
     image_left1.set_colorkey((255, 255, 255))
     image_left2 = pygame.transform.flip(image_right2, True, False)
@@ -37,7 +38,7 @@ class Fireboy(pygame.sprite.Sprite):
         self.deltax = 0
         self.deltay = 0
 
-    def update(self, tiles):
+    def update(self, tiles, fire_crystal, water_crystal, fire_count, water_count):
         if self.right:
             self.deltax = SPEED
             if self.image != Fireboy.image_right1:
@@ -63,11 +64,11 @@ class Fireboy(pygame.sprite.Sprite):
             self.deltay += GRAVITY
         self.ground = False
         self.rect.y += self.deltay
-        self.collide(0, self.deltay, tiles)
+        self.collide(0, self.deltay, tiles, fire_crystal, fire_count)
         self.rect.x += self.deltax
-        self.collide(self.deltax,0, tiles)
+        self.collide(self.deltax, 0, tiles, fire_crystal, fire_count)
 
-    def collide(self, deltax, deltay, tiles):
+    def collide(self, deltax, deltay, tiles, fire_crystal, fire_count):
         for tile in tiles:
             if pygame.sprite.collide_mask(self, tile):
                 if deltax > 0:
@@ -81,12 +82,17 @@ class Fireboy(pygame.sprite.Sprite):
                     self.ground = True
                     self.rect.bottom = tile.rect.top
                     self.deltay = 0
+        for crystal in fire_crystal:
+            if pygame.sprite.collide_mask(self, crystal):
+                fire_count += 1
+                crystal.kill()
+
 
 class Watergirl(pygame.sprite.Sprite):
-    image_stay1 = load_image("watergirl_stay1.png")
-    image_stay2 = load_image('watergirl_stay2.png')
-    image_right1 = load_image('watergirl_right1.png')
-    image_right2 = load_image('watergirl_right2.png')
+    image_stay1 = load_image("watergirl_stay1.png", CHARACTER_SIZE, (255, 255, 255))
+    image_stay2 = load_image('watergirl_stay2.png', CHARACTER_SIZE, (255, 255, 255))
+    image_right1 = load_image('watergirl_right1.png', CHARACTER_SIZE, (255, 255, 255))
+    image_right2 = load_image('watergirl_right2.png', CHARACTER_SIZE, (255, 255, 255))
     image_left1 = pygame.transform.flip(image_right1, True, False)
     image_left1.set_colorkey((255, 255, 255))
     image_left2 = pygame.transform.flip(image_right2, True, False)
@@ -105,8 +111,7 @@ class Watergirl(pygame.sprite.Sprite):
         self.deltax = 0
         self.deltay = 0
 
-
-    def update(self, tiles):
+    def update(self, tiles, fire_crystal, water_crystal, fire_count, water_count):
         if self.right:
             self.deltax = SPEED
             if self.image != Watergirl.image_right1:
@@ -132,11 +137,11 @@ class Watergirl(pygame.sprite.Sprite):
             self.deltay += GRAVITY
         self.ground = False
         self.rect.y += self.deltay
-        self.collide(0, self.deltay, tiles)
+        self.collide(0, self.deltay, tiles, water_crystal, water_count)
         self.rect.x += self.deltax
-        self.collide(self.deltax, 0, tiles)
+        self.collide(self.deltax, 0, tiles, water_crystal, water_count)
 
-    def collide(self, deltax, deltay, tiles):
+    def collide(self, deltax, deltay, tiles, water_crystal, water_count):
         for tile in tiles:
             if pygame.sprite.collide_mask(self, tile):
                 if deltax > 0:
@@ -150,15 +155,32 @@ class Watergirl(pygame.sprite.Sprite):
                     self.ground = True
                     self.rect.bottom = tile.rect.top
                     self.deltay = 0
+        for crystal in water_crystal:
+            if pygame.sprite.collide_mask(self, crystal):
+                water_count += 1
+                crystal.kill()
 
 
 class Tiles(pygame.sprite.Sprite):
-    image = load_image('wall.png')
+    image = load_image('wall.png', (TILE_SIZE, TILE_SIZE), (255, 255, 255))
 
     def __init__(self, x, y):
         super().__init__()
         self.rect = pygame.Rect(x, y, TILE_SIZE, TILE_SIZE)
-        self.image = pygame.transform.scale(self.image, (TILE_SIZE, TILE_SIZE))
+        self.image = Tiles.image
 
     def update(self, *args):
         pass
+
+
+class Crystal(pygame.sprite.Sprite):
+    water_image = load_image('water_crystal.png', CRYSTAL_SIZE, (255, 255, 255))
+    fire_image = load_image('fire_crystal.png', CRYSTAL_SIZE, (255, 255, 255))
+
+    def __init__(self, x, y, color):
+        super().__init__()
+        self.rect = pygame.Rect((x, y), CRYSTAL_SIZE)
+        if color == 'fire':
+            self.image = Crystal.fire_image
+        else:
+            self.image = Crystal.water_image

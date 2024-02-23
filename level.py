@@ -1,6 +1,6 @@
 import pygame
 from const import *
-from characters import Tiles
+from characters import Tiles, Crystal
 import sys
 import os
 
@@ -20,7 +20,7 @@ class Fireboy_and_Watergirl:
         self.free_tiles = free_tiles
         self.finish_tile = finish_tile
 
-    def render(self, screen, tiles):
+    def render(self, screen, tiles, fire_crystal, water_crystal):
         for y in range(len(self.map)):
             for x in range(len(self.map[0]) - 1):
                 if self.map[y][x] == '#':
@@ -28,7 +28,12 @@ class Fireboy_and_Watergirl:
                     tiles.add(tile)
                 else:
                     screen.blit(pygame.transform.scale(self.background, (TILE_SIZE, TILE_SIZE)), (x * TILE_SIZE, y * TILE_SIZE))
-
+                    if self.map[y][x] == '1':
+                        crystal = Crystal(x * TILE_SIZE, y * TILE_SIZE, 'fire')
+                        fire_crystal.add(crystal)
+                    if self.map[y][x] == '2':
+                        crystal = Crystal(x * TILE_SIZE, y * TILE_SIZE, 'water')
+                        water_crystal.add(crystal)
 
     def get_tile_id(self, position):
         return self.map.tiledgidmap[self.map.get_tile_gid(*position, 0)]

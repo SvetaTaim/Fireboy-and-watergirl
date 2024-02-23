@@ -17,6 +17,10 @@ if __name__ == '__main__':
     all_sprites.add(girl)
     all_sprites.add(boy)
     tiles = pygame.sprite.Group()
+    fire_crystal = pygame.sprite.Group()
+    water_crystal = pygame.sprite.Group()
+    fire_count = 0
+    water_count = 0
     game_on = False
     change_level = 0
     running = True
@@ -63,14 +67,16 @@ if __name__ == '__main__':
                         girl.jump = False
         if change_level:
             fb_wg = Fireboy_and_Watergirl(f"map{change_level}.txt", [10, 46], 20)
-            fb_wg.render(screen_back, tiles)
+            fb_wg.render(screen_back, tiles, fire_crystal, water_crystal)
             tiles.draw(screen_back)
+            all_sprites.add(water_crystal)
+            all_sprites.add(fire_crystal)
             game_on = True
             change_level = False
         if game_on:
             screen.fill((0, 0, 0))
             screen.blit(screen_back, (0, 0))
-            all_sprites.update(tiles)
+            all_sprites.update(tiles, fire_crystal, water_crystal, fire_count, water_count)
             all_sprites.draw(screen)
         pygame.display.flip()
         clock.tick(FPS)
