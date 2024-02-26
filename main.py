@@ -9,13 +9,8 @@ if __name__ == '__main__':
     screen_back = pygame.Surface(WINDOW_SIZE)
     pygame.display.set_caption('Огонь и вода')
     screen.fill((255, 255, 255))  # Мила, придумай, как открывать начальную картинку. Я пока ее просто убрала, чтобы код заработал
-    # Герои пока остаются на поле линией, потому что надо сделать нормально fb_wg. Я не совсем понимаю, что это, поэтому надеюсь на тебя
     clock = pygame.time.Clock()
     all_sprites = pygame.sprite.Group()
-    boy = Fireboy()
-    girl = Watergirl()
-    all_sprites.add(girl)
-    all_sprites.add(boy)
     tiles = pygame.sprite.Group()
     fire_crystal = pygame.sprite.Group()
     water_crystal = pygame.sprite.Group()
@@ -25,6 +20,23 @@ if __name__ == '__main__':
     change_level = 0
     running = True
     while running:
+        if game_on:
+            screen.fill((0, 0, 0))
+            screen.blit(screen_back, (0, 0))
+            all_sprites.update(tiles, fire_crystal, water_crystal, fire_count, water_count)
+            all_sprites.draw(screen)
+        if change_level:
+            fb_wg = Fireboy_and_Watergirl(f"map{change_level}.txt", [10, 46], 20)
+            coor = fb_wg.render(screen_back, tiles, fire_crystal, water_crystal)
+            tiles.draw(screen_back)
+            game_on = True
+            change_level = False
+            boy = Fireboy(*coor[0])
+            girl = Watergirl(*coor[1])
+            all_sprites.add(girl)
+            all_sprites.add(boy)
+            all_sprites.add(water_crystal)
+            all_sprites.add(fire_crystal)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
@@ -37,18 +49,6 @@ if __name__ == '__main__':
                             change_level = 2
                         elif 416 <= event.pos[1] <= 512:
                             change_level = 3
-            if change_level:
-                fb_wg = Fireboy_and_Watergirl(f"map{change_level}.txt", [10, 46], 20)
-                coor = fb_wg.render(screen_back, tiles)
-                tiles.draw(screen_back)
-                game_on = True
-                change_level = False
-                boy = Fireboy(*coor[0])
-                girl = Watergirl(*coor[1])
-                all_sprites.add(girl)
-                all_sprites.add(boy)
-            if event.type == pygame.QUIT:
-                running = False
             if event.type == pygame.KEYDOWN:
                 if game_on:
                     if event.key == pygame.K_RIGHT:
@@ -77,17 +77,6 @@ if __name__ == '__main__':
                         girl.left = False
                     if event.key == pygame.K_w:
                         girl.jump = False
-        if change_level:
-            fb_wg = Fireboy_and_Watergirl(f"map{change_level}.txt", [10, 46], 20)
-            fb_wg.render(screen_back, tiles)
-            tiles.draw(screen_back)
-            game_on = True
-            change_level = False
-        if game_on:
-            screen.fill((0, 0, 0))
-            screen.blit(screen_back, (0, 0))
-            all_sprites.update(tiles, fire_crystal, water_crystal, fire_count, water_count)
-            all_sprites.draw(screen)
         pygame.display.flip()
         clock.tick(FPS)
     pygame.quit()
