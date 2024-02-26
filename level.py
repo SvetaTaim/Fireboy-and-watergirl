@@ -16,6 +16,8 @@ class Fireboy_and_Watergirl:
     def __init__(self, filename, free_tiles, finish_tile):
         self.background = load_image('background.png')
         self.tile = load_image('wall.png')
+        self.boy_door = load_image('boy_door.png')
+        self.girl_door = load_image('girl_door.png')
         self.map = open(f"data/{filename}").readlines()
         self.free_tiles = free_tiles
         self.finish_tile = finish_tile
@@ -30,6 +32,10 @@ class Fireboy_and_Watergirl:
                 if self.map[y][x] == '#':
                     tile = Tiles(x * TILE_SIZE, y * TILE_SIZE)
                     tiles.add(tile)
+                elif self.map[y][x] == '!':
+                    screen.blit(pygame.transform.scale(self.boy_door, (TILE_SIZE, TILE_SIZE)), (x * TILE_SIZE, y * TILE_SIZE))
+                elif self.map[y][x] == '?':
+                    screen.blit(pygame.transform.scale(self.girl_door, (TILE_SIZE, TILE_SIZE)), (x * TILE_SIZE, y * TILE_SIZE))
                 else:
                     screen.blit(pygame.transform.scale(self.background, (TILE_SIZE, TILE_SIZE)), (x * TILE_SIZE, y * TILE_SIZE))
                 if self.map[y][x] == '1':
