@@ -25,12 +25,13 @@ class Fireboy(pygame.sprite.Sprite):
     image_left2 = pygame.transform.flip(image_right2, True, False)
     image_left2.set_colorkey((255, 255, 255))
 
-    def __init__(self, x, y):
+    def __init__(self, x=None, y=None):
         super().__init__()
         self.image = Fireboy.image_stay1
         self.rect = self.image.get_rect()
-        self.rect.x = x
-        self.rect.y = y
+        if x and y:
+            self.rect.x = x
+            self.rect.y = y
         self.right = False
         self.left = False
         self.jump = False
@@ -98,12 +99,13 @@ class Watergirl(pygame.sprite.Sprite):
     image_left2 = pygame.transform.flip(image_right2, True, False)
     image_left2.set_colorkey((255, 255, 255))
 
-    def __init__(self, x, y):
+    def __init__(self, x=None, y=None):
         super().__init__()
         self.image = Watergirl.image_stay1
         self.rect = self.image.get_rect()
-        self.rect.x = x
-        self.rect.y = y
+        if x and y:
+            self.rect.x = x
+            self.rect.y = y
         self.right = False
         self.left = False
         self.jump = False

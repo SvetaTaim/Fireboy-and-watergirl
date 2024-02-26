@@ -12,8 +12,8 @@ if __name__ == '__main__':
     # Герои пока остаются на поле линией, потому что надо сделать нормально fb_wg. Я не совсем понимаю, что это, поэтому надеюсь на тебя
     clock = pygame.time.Clock()
     all_sprites = pygame.sprite.Group()
-    boy = Fireboy(100, 100)
-    girl = Watergirl(200, 200)
+    boy = Fireboy()
+    girl = Watergirl()
     all_sprites.add(girl)
     all_sprites.add(boy)
     tiles = pygame.sprite.Group()
@@ -86,7 +86,7 @@ if __name__ == '__main__':
         if game_on:
             screen.fill((0, 0, 0))
             screen.blit(screen_back, (0, 0))
-            all_sprites.update(tiles)
+            all_sprites.update(tiles, fire_crystal, water_crystal, fire_count, water_count)
             all_sprites.draw(screen)
         pygame.display.flip()
         clock.tick(FPS)
