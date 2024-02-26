@@ -42,14 +42,20 @@ class Fireboy(pygame.sprite.Sprite):
     def update(self, tiles, fire_crystal, water_crystal, fire_count, water_count):
         if self.right:
             self.deltax = SPEED
-            if self.image != Fireboy.image_right1:
-                self.image = Fireboy.image_right1
+            if not self.jump:
+                if self.image != Fireboy.image_right1:
+                    self.image = Fireboy.image_right1
+                else:
+                    self.image = Fireboy.image_right2
             else:
                 self.image = Fireboy.image_right2
         if self.left:
             self.deltax = -SPEED
-            if self.image != Fireboy.image_left1:
-                self.image = Fireboy.image_left1
+            if not self.jump:
+                if self.image != Fireboy.image_left1:
+                    self.image = Fireboy.image_left1
+                else:
+                    self.image = Fireboy.image_left2
             else:
                 self.image = Fireboy.image_left2
         if not (self.left or self.right):
@@ -116,14 +122,20 @@ class Watergirl(pygame.sprite.Sprite):
     def update(self, tiles, fire_crystal, water_crystal, fire_count, water_count):
         if self.right:
             self.deltax = SPEED
-            if self.image != Watergirl.image_right1:
-                self.image = Watergirl.image_right1
+            if not self.jump:
+                if self.image != Watergirl.image_right1:
+                    self.image = Watergirl.image_right1
+                else:
+                    self.image = Watergirl.image_right2
             else:
                 self.image = Watergirl.image_right2
         if self.left:
             self.deltax = -SPEED
-            if self.image != Watergirl.image_left1:
-                self.image = Watergirl.image_left1
+            if not self.jump:
+                if self.image != Watergirl.image_left1:
+                    self.image = Watergirl.image_left1
+                else:
+                    self.image = Watergirl.image_left2
             else:
                 self.image = Watergirl.image_left2
         if not (self.left or self.right):
