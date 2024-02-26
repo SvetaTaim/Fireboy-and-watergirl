@@ -23,11 +23,16 @@ class Fireboy_and_Watergirl:
     def render(self, screen, tiles):
         for y in range(len(self.map)):
             for x in range(len(self.map[0]) - 1):
+                if self.map[y][x] == '&':
+                    boy_coor = x * TILE_SIZE, y * TILE_SIZE
+                elif self.map[y][x] == '@':
+                    girl_coor = x * TILE_SIZE, y * TILE_SIZE
                 if self.map[y][x] == '#':
                     tile = Tiles(x * TILE_SIZE, y * TILE_SIZE)
                     tiles.add(tile)
                 else:
                     screen.blit(pygame.transform.scale(self.background, (TILE_SIZE, TILE_SIZE)), (x * TILE_SIZE, y * TILE_SIZE))
+        return (boy_coor, girl_coor)
 
 
     def get_tile_id(self, position):

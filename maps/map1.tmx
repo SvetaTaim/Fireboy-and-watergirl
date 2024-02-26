@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="2" nextobjectid="1">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="4" nextobjectid="2">
+ <editorsettings>
+  <export target="map1.csv" format="csv"/>
+ </editorsettings>
  <tileset firstgid="1" source="tiles.tsx"/>
+ <objectgroup id="2" name="Герой">
+  <object id="1" x="47" y="606">
+   <properties>
+    <property name="position" value="return (x,y)"/>
+   </properties>
+   <point/>
+  </object>
+ </objectgroup>
  <layer id="1" name="Слой тайлов 1" width="20" height="20">
   <data encoding="base64" compression="zlib">
    eJyLZGBgiKQyDqUSprV5tPIvuWFB7TAkJV6I8Ru10wGt/ErrcCPF35TmEXrkO1rkb1LTHSlmUuofYtRREo6DPT1TEwMAbSiHbQ==
