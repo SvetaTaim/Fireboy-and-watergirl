@@ -1,6 +1,6 @@
 import pygame
 from const import *
-from characters import Tiles, Crystal
+from characters import Tiles, Crystal, Door
 import sys
 import os
 
@@ -16,13 +16,11 @@ class Fireboy_and_Watergirl:
     def __init__(self, filename, free_tiles, finish_tile):
         self.background = load_image('background.png')
         self.tile = load_image('wall.png')
-        self.boy_door = load_image('boy_door.png')
-        self.girl_door = load_image('girl_door.png')
         self.map = open(f"data/{filename}").readlines()
         self.free_tiles = free_tiles
         self.finish_tile = finish_tile
 
-    def render(self, screen, tiles, fire_crystal, water_crystal):
+    def render(self, screen, tiles, fire_crystal, water_crystal, doors):
         for y in range(len(self.map)):
             for x in range(len(self.map[0]) - 1):
                 if self.map[y][x] == '&':
@@ -33,9 +31,11 @@ class Fireboy_and_Watergirl:
                     tile = Tiles(x * TILE_SIZE, y * TILE_SIZE)
                     tiles.add(tile)
                 elif self.map[y][x] == '!':
-                    screen.blit(pygame.transform.scale(self.boy_door, (TILE_SIZE, TILE_SIZE)), (x * TILE_SIZE, y * TILE_SIZE))
+                    door = Door(x * TILE_SIZE, (y + 1) * TILE_SIZE - DOOR_SIZE[1], 'fire')
+                    doors.add(door)
                 elif self.map[y][x] == '?':
-                    screen.blit(pygame.transform.scale(self.girl_door, (TILE_SIZE, TILE_SIZE)), (x * TILE_SIZE, y * TILE_SIZE))
+                    door = Door(x * TILE_SIZE, (y + 1) * TILE_SIZE - DOOR_SIZE[1], 'water')
+                    doors.add(door)
                 else:
                     screen.blit(pygame.transform.scale(self.background, (TILE_SIZE, TILE_SIZE)), (x * TILE_SIZE, y * TILE_SIZE))
                 if self.map[y][x] == '1':

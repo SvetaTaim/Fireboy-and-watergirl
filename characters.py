@@ -4,7 +4,7 @@ import sys
 from const import *
 
 
-def load_image(name, size, colorkey):
+def load_image(name, size, colorkey=(255, 255, 255)):
     fullname = os.path.join('data', name)
     if not os.path.isfile(fullname):
         print(f"Файл с изображением '{fullname}' не найден")
@@ -16,10 +16,10 @@ def load_image(name, size, colorkey):
 
 
 class Fireboy(pygame.sprite.Sprite):
-    image_stay1 = load_image("fireboy_stay1.png", CHARACTER_SIZE, (255, 255, 255))
-    image_stay2 = load_image('fireboy_stay2.png', CHARACTER_SIZE, (255, 255, 255))
-    image_right1 = load_image('fireboy_right1.png', CHARACTER_SIZE, (255, 255, 255))
-    image_right2 = load_image('fireboy_right2.png', CHARACTER_SIZE, (255, 255, 255))
+    image_stay1 = load_image("fireboy_stay1.png", CHARACTER_STAY_SIZE)
+    image_stay2 = load_image('fireboy_stay2.png', CHARACTER_STAY_SIZE)
+    image_right1 = load_image('fireboy_right1.png', CHARACTER_RUN_SIZE)
+    image_right2 = load_image('fireboy_right2.png', CHARACTER_RUN_SIZE)
     image_left1 = pygame.transform.flip(image_right1, True, False)
     image_left1.set_colorkey((255, 255, 255))
     image_left2 = pygame.transform.flip(image_right2, True, False)
@@ -77,7 +77,7 @@ class Fireboy(pygame.sprite.Sprite):
 
     def collide(self, deltax, deltay, tiles, fire_crystal, fire_count):
         for tile in tiles:
-            if pygame.sprite.collide_mask(self, tile):
+            if pygame.sprite.collide_rect(self, tile):
                 if deltax > 0:
                     self.rect.right = tile.rect.left
                 if deltax < 0:
@@ -96,10 +96,10 @@ class Fireboy(pygame.sprite.Sprite):
 
 
 class Watergirl(pygame.sprite.Sprite):
-    image_stay1 = load_image("watergirl_stay1.png", CHARACTER_SIZE, (255, 255, 255))
-    image_stay2 = load_image('watergirl_stay2.png', CHARACTER_SIZE, (255, 255, 255))
-    image_right1 = load_image('watergirl_right1.png', CHARACTER_SIZE, (255, 255, 255))
-    image_right2 = load_image('watergirl_right2.png', CHARACTER_SIZE, (255, 255, 255))
+    image_stay1 = load_image("watergirl_stay1.png", CHARACTER_STAY_SIZE)
+    image_stay2 = load_image('watergirl_stay2.png', CHARACTER_STAY_SIZE)
+    image_right1 = load_image('watergirl_right1.png', CHARACTER_RUN_SIZE)
+    image_right2 = load_image('watergirl_right2.png', CHARACTER_RUN_SIZE)
     image_left1 = pygame.transform.flip(image_right1, True, False)
     image_left1.set_colorkey((255, 255, 255))
     image_left2 = pygame.transform.flip(image_right2, True, False)
@@ -157,7 +157,7 @@ class Watergirl(pygame.sprite.Sprite):
 
     def collide(self, deltax, deltay, tiles, water_crystal, water_count):
         for tile in tiles:
-            if pygame.sprite.collide_mask(self, tile):
+            if pygame.sprite.collide_rect(self, tile):
                 if deltax > 0:
                     self.rect.right = tile.rect.left
                 if deltax < 0:
@@ -176,7 +176,7 @@ class Watergirl(pygame.sprite.Sprite):
 
 
 class Tiles(pygame.sprite.Sprite):
-    image = load_image('wall.png', (TILE_SIZE, TILE_SIZE), (255, 255, 255))
+    image = load_image('wall.png', (TILE_SIZE, TILE_SIZE))
 
     def __init__(self, x, y):
         super().__init__()
@@ -188,8 +188,8 @@ class Tiles(pygame.sprite.Sprite):
 
 
 class Crystal(pygame.sprite.Sprite):
-    water_image = load_image('water_crystal.png', CRYSTAL_SIZE, (255, 255, 255))
-    fire_image = load_image('fire_crystal.png', CRYSTAL_SIZE, (255, 255, 255))
+    water_image = load_image('water_crystal.png', CRYSTAL_SIZE)
+    fire_image = load_image('fire_crystal.png', CRYSTAL_SIZE)
 
     def __init__(self, x, y, color):
         super().__init__()
@@ -198,3 +198,15 @@ class Crystal(pygame.sprite.Sprite):
             self.image = Crystal.fire_image
         else:
             self.image = Crystal.water_image
+
+class Door(pygame.sprite.Sprite):
+    water_door = load_image('girl_door.png', DOOR_SIZE)
+    boy_door = load_image('boy_door.png', DOOR_SIZE)
+
+    def __init__(self, x, y, color):
+        super().__init__()
+        self.rect = pygame.Rect((x, y), DOOR_SIZE)
+        if color == 'fire':
+            self.image = Door.boy_door
+        else:
+            self.image = Door.water_door

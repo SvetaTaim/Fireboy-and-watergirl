@@ -11,12 +11,6 @@ if __name__ == '__main__':
     greet = pygame.image.load('data/greeting_screen.png')
     screen.blit(greet, (0, 0))
     clock = pygame.time.Clock()
-    all_sprites = pygame.sprite.Group()
-    tiles = pygame.sprite.Group()
-    fire_crystal = pygame.sprite.Group()
-    water_crystal = pygame.sprite.Group()
-    fire_count = 0
-    water_count = 0
     new_game = False
     game_on = False
     change_level = 0
@@ -30,8 +24,15 @@ if __name__ == '__main__':
             all_sprites.update(tiles, fire_crystal, water_crystal, fire_count, water_count)
             all_sprites.draw(screen)
         elif change_level:
+            all_sprites = pygame.sprite.Group()
+            tiles = pygame.sprite.Group()
+            fire_crystal = pygame.sprite.Group()
+            water_crystal = pygame.sprite.Group()
+            doors = pygame.sprite.Group()
+            fire_count = 0
+            water_count = 0
             fb_wg = Fireboy_and_Watergirl(f"map{change_level}.txt", [10, 46], 20)
-            coor = fb_wg.render(screen_back, tiles, fire_crystal, water_crystal)
+            coor = fb_wg.render(screen_back, tiles, fire_crystal, water_crystal, doors)
             tiles.draw(screen_back)
             game_on = True
             change_level = False
@@ -42,6 +43,7 @@ if __name__ == '__main__':
             all_sprites.add(boy)
             all_sprites.add(water_crystal)
             all_sprites.add(fire_crystal)
+            all_sprites.add(doors)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
@@ -86,6 +88,7 @@ if __name__ == '__main__':
                         girl.left = False
                     if event.key == pygame.K_w:
                         girl.jump = False
+
         pygame.display.flip()
         clock.tick(FPS)
     pygame.quit()
