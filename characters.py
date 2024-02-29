@@ -99,8 +99,9 @@ class Fireboy(pygame.sprite.Sprite):
         for pond in fire_ponds:
             if pygame.sprite.collide_mask(self, pond):
                 self.live = False
-        if pygame.sprite.collide_mask(self, boy_door):
-            self.indoor = True
+        for door in boy_door:
+            if pygame.sprite.collide_mask(self, door):
+                self.indoor = True
 
 
 class Watergirl(pygame.sprite.Sprite):
@@ -187,8 +188,9 @@ class Watergirl(pygame.sprite.Sprite):
         for pond in water_ponds:
             if pygame.sprite.collide_mask(self, pond):
                 self.live = False
-        if pygame.sprite.collide_mask(self, girl_door):
-            self.indoor = True
+        for door in girl_door:
+            if pygame.sprite.collide_mask(self, door):
+                self.indoor = True
 
 
 class Tiles(pygame.sprite.Sprite):

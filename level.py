@@ -39,10 +39,10 @@ class Fireboy_and_Watergirl:
                         water_ponds.add(pond)
                 elif self.map[y][x] == '!':
                     door = Door(x * TILE_SIZE, (y + 1) * TILE_SIZE - DOOR_SIZE[1], 'fire')
-                    boy_door = door
+                    boy_door.add(door)
                 elif self.map[y][x] == '?':
                     door = Door(x * TILE_SIZE, (y + 1) * TILE_SIZE - DOOR_SIZE[1], 'water')
-                    girl_door = door
+                    girl_door.add(door)
                 else:
                     screen.blit(pygame.transform.scale(self.background, (TILE_SIZE, TILE_SIZE)), (x * TILE_SIZE, y * TILE_SIZE))
                 if self.map[y][x] == '1':
