@@ -13,14 +13,15 @@ def load_image(name):
     return image
 
 class Fireboy_and_Watergirl:
-    def __init__(self, filename, free_tiles, finish_tile):
+    def __init__(self, change_level):
+        filename = f"map{change_level}.txt"
         self.background = load_image('background.png')
         self.tile = load_image('wall.png')
         self.map = open(f"data/{filename}").readlines()
-        self.free_tiles = free_tiles
-        self.finish_tile = finish_tile
+        self.name = change_level
 
-    def render(self, screen, tiles, fire_crystal, water_crystal, doors, water_ponds, fire_ponds):
+    def render(self, screen, tiles, fire_crystal, water_crystal, boy_door, girl_door, water_ponds, fire_ponds):
+        screen.fill((0, 0, 0))
         for y in range(len(self.map)):
             for x in range(len(self.map[0]) - 1):
                 if self.map[y][x] == '&':
@@ -38,10 +39,10 @@ class Fireboy_and_Watergirl:
                         water_ponds.add(pond)
                 elif self.map[y][x] == '!':
                     door = Door(x * TILE_SIZE, (y + 1) * TILE_SIZE - DOOR_SIZE[1], 'fire')
-                    doors.add(door)
+                    boy_door = door
                 elif self.map[y][x] == '?':
                     door = Door(x * TILE_SIZE, (y + 1) * TILE_SIZE - DOOR_SIZE[1], 'water')
-                    doors.add(door)
+                    girl_door = door
                 else:
                     screen.blit(pygame.transform.scale(self.background, (TILE_SIZE, TILE_SIZE)), (x * TILE_SIZE, y * TILE_SIZE))
                 if self.map[y][x] == '1':
@@ -51,6 +52,9 @@ class Fireboy_and_Watergirl:
                     crystal = Crystal(x * TILE_SIZE, y * TILE_SIZE, 'water')
                     water_crystal.add(crystal)
         return (boy_coor, girl_coor)
+
+    def level(self):
+        return self.name
 
 
     def get_tile_id(self, position):
