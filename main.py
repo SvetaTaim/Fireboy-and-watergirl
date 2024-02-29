@@ -120,7 +120,8 @@ def game_on(level, all_sprites, boy, girl, tiles, fire_crystal, water_crystal, f
         screen.blit(screen_back, (0, 0))
         all_sprites.update(tiles, fire_crystal, water_crystal, fire_count, water_count, water_ponds, fire_ponds, boy_door, girl_door)
         all_sprites.draw(screen)
-        if not (boy.live and girl.live):
+        if not boy.live or not girl.live:
+            pygame.time.delay(1000)
             fail(level)
         if boy.indoor and girl.indoor:
             pygame.time.delay(1000)
@@ -130,12 +131,19 @@ def game_on(level, all_sprites, boy, girl, tiles, fire_crystal, water_crystal, f
 
 
 def fail(level):
+    im = pygame.image.load('data/victory.png')
+    im = pygame.transform.scale(im, WINDOW_SIZE)
+    screen.blit(im, (0, 0))
+    pygame.display.update()
     while True:
         for event in pygame.event.get():
-            if 270 <= event.pos[1] < 370 and (230 <= event.pos[0] < 420 or 260 <= event.pos[0] < 395):
-                main_window()
-            elif 200 <= event.pos[0] < 445 and 410 <= event.pos[1] < 445:
-                change_level(level)
+            if event.type == pygame.QUIT:
+                close()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if 270 <= event.pos[1] < 370 and (230 <= event.pos[0] < 420 or 260 <= event.pos[0] < 395):
+                    main_window()
+                elif 200 <= event.pos[0] < 445 and 410 <= event.pos[1] < 445:
+                    change_level(level)
 
 def close():
     pygame.quit()

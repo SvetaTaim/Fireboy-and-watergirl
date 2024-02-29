@@ -32,10 +32,10 @@ class Fireboy_and_Watergirl:
                     tile = Tiles(x * TILE_SIZE, y * TILE_SIZE)
                     tiles.add(tile)
                     if self.map[y][x] == 'f':
-                        pond = Pond(x * TILE_SIZE, y * TILE_SIZE, 'fire')
+                        pond = Pond(x * TILE_SIZE, y * TILE_SIZE - 3, 'fire')
                         fire_ponds.add(pond)
                     if self.map[y][x] == 'w':
-                        pond = Pond(x * TILE_SIZE, y * TILE_SIZE, 'water')
+                        pond = Pond(x * TILE_SIZE, y * TILE_SIZE - 3, 'water')
                         water_ponds.add(pond)
                 elif self.map[y][x] == '!':
                     door = Door(x * TILE_SIZE, (y + 1) * TILE_SIZE - DOOR_SIZE[1], 'fire')
