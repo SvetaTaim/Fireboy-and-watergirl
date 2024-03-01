@@ -2,9 +2,12 @@ import pygame
 from characters import Fireboy, Watergirl
 from const import *
 from level import Fireboy_and_Watergirl
+from records_list import create_list
 
 
-def start_window():
+def start_window(achievements=None):
+    if achievements is None:
+        achievements = {}
     greet = pygame.image.load('data/greeting_screen.png')
     screen.blit(greet, (0, 0))
     pygame.display.update()
@@ -13,12 +16,13 @@ def start_window():
             if event.type == pygame.QUIT:
                 close()
             if event.type == pygame.MOUSEBUTTONDOWN:
-                if 248 <= event.pos[0] <= 360:
-                    if 315 <= event.pos[1] < 370:
-                        levels_window()
+                if 248 <= event.pos[0] <= 360 and 315 <= event.pos[1] < 370:
+                    levels_window(achievements)
+                if 210 <= event.pos[0] <= 410 and 385 <= event.pos[1] < 410:
+                    records(True, achievements)
 
 
-def levels_window():
+def levels_window(achievements):
     im = pygame.image.load('data/select_level.png')
     im = pygame.transform.scale(im, WINDOW_SIZE)
     screen.blit(im, (0, 0))
@@ -30,14 +34,14 @@ def levels_window():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if 128 <= event.pos[0] <= 480:
                     if 224 <= event.pos[1] < 320:
-                        change_level(1)
+                        change_level(1, achievements)
                     elif 320 <= event.pos[1] < 416:
-                        change_level(2)
+                        change_level(2, achievements)
                     elif 416 <= event.pos[1] <= 512:
-                        change_level(3)
+                        change_level(3, achievements)
 
 
-def change_level(level):
+def change_level(level, achievements):
     all_sprites = pygame.sprite.Group()
     tiles = pygame.sprite.Group()
     fire_crystal = pygame.sprite.Group()
@@ -59,10 +63,11 @@ def change_level(level):
     all_sprites.add(fire_ponds)
     all_sprites.add(girl)
     all_sprites.add(boy)
-    game_on(level, all_sprites, boy, girl, tiles, fire_crystal, water_crystal, water_ponds, fire_ponds, boy_door, girl_door)
+    game_on(level, achievements, all_sprites, boy, girl, tiles, fire_crystal, water_crystal, water_ponds, fire_ponds, boy_door, girl_door)
 
 
-def victory(level, boy, girl):
+def victory(level, achievements, boy, girl):
+    records(False, achievements, level, boy, girl)
     im = pygame.image.load('data/victory.png')
     im = pygame.transform.scale(im, WINDOW_SIZE)
     screen.blit(im, (0, 0))
@@ -73,15 +78,21 @@ def victory(level, boy, girl):
                 close()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if 270 <= event.pos[1] < 370 and (230 <= event.pos[0] < 420 or 260 <= event.pos[0] < 395):
-                    levels_window()
+                    start_window(achievements)
                 elif 200 <= event.pos[0] < 445 and 410 <= event.pos[1] < 445:
-                    change_level(level)
+                    change_level(level, achievements)
 
 
-def records(level, boy, girl, time, show=False):
-    records[level] = time, boy.fire_count + girl.water_count
+def records(show, achievements, *args):
+    if args:
+        level, boy, girl = args
+        if level not in achievements.keys():
+            achievements[level] = [boy.fire_count + girl.water_count]
+        elif boy.fire_count + girl.water_count >= achievements[level][0]:
+            achievements[level] = [boy.fire_count + girl.water_count]
     if show:
-        im = pygame.image.load('data/records.png')
+        create_list(achievements)
+        im = pygame.image.load("data/new_rec.png")
         im = pygame.transform.scale(im, WINDOW_SIZE)
         screen.blit(im, (0, 0))
         pygame.display.update()
@@ -90,11 +101,12 @@ def records(level, boy, girl, time, show=False):
                 if event.type == pygame.QUIT:
                     close()
                 if event.type == pygame.MOUSEBUTTONDOWN:
-                    if 270 <= event.pos[1] < 370 and (230 <= event.pos[0] < 420 or 260 <= event.pos[0] < 395):
-                        levels_window()
+                    if 205 <= event.pos[0] < 385 and 510 <= event.pos[1] < 595:
+                        levels_window(achievements)
 
 
-def game_on(level, all_sprites, boy, girl, tiles, fire_crystal, water_crystal, water_ponds, fire_ponds, boy_door, girl_door):
+
+def game_on(level, achievements, all_sprites, boy, girl, tiles, fire_crystal, water_crystal, water_ponds, fire_ponds, boy_door, girl_door):
     clock = pygame.time.Clock()
     while True:
         for event in pygame.event.get():
@@ -134,15 +146,15 @@ def game_on(level, all_sprites, boy, girl, tiles, fire_crystal, water_crystal, w
         all_sprites.draw(screen)
         if not boy.live or not girl.live:
             pygame.time.delay(1000)
-            fail(level)
+            fail(level, achievements)
         if boy.indoor and girl.indoor:
             pygame.time.delay(1000)
-            victory(level, boy, girl)
+            victory(level, achievements, boy, girl)
         pygame.display.flip()
         clock.tick(FPS)
 
 
-def fail(level):
+def fail(level, achievements):
     im = pygame.image.load('data/game_over.png')
     im = pygame.transform.scale(im, WINDOW_SIZE)
     screen.blit(im, (0, 0))
@@ -153,9 +165,9 @@ def fail(level):
                 close()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if 270 <= event.pos[1] < 370 and (230 <= event.pos[0] < 420 or 260 <= event.pos[0] < 395):
-                    levels_window()
+                    start_window(achievements)
                 elif 200 <= event.pos[0] < 445 and 410 <= event.pos[1] < 445:
-                    change_level(level)
+                    change_level(level, achievements)
 
 def close():
     pygame.quit()
