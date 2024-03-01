@@ -66,8 +66,9 @@ def change_level(level, achievements):
     game_on(level, achievements, all_sprites, boy, girl, tiles, fire_crystal, water_crystal, water_ponds, fire_ponds, boy_door, girl_door)
 
 
-def victory(level, achievements, boy, girl):
-    records(False, achievements, level, boy, girl)
+def victory(level, achievements, boy, girl, ticks):
+    pygame.mouse.set_visible(1)
+    records(False, achievements, level, boy, girl, ticks)
     im = pygame.image.load('data/victory.png')
     im = pygame.transform.scale(im, WINDOW_SIZE)
     screen.blit(im, (0, 0))
@@ -85,11 +86,11 @@ def victory(level, achievements, boy, girl):
 
 def records(show, achievements, *args):
     if args:
-        level, boy, girl = args
+        level, boy, girl, ticks = args
         if level not in achievements.keys():
-            achievements[level] = [boy.fire_count + girl.water_count]
-        elif boy.fire_count + girl.water_count >= achievements[level][0]:
-            achievements[level] = [boy.fire_count + girl.water_count]
+            achievements[level] = [ticks, boy.fire_count + girl.water_count]
+        elif ticks < achievements[0] and boy.fire_count + girl.water_count >= achievements[level][1]:
+            achievements[level] = [ticks, boy.fire_count + girl.water_count]
     if show:
         create_list(achievements)
         im = pygame.image.load("data/new_rec.png")
@@ -107,8 +108,10 @@ def records(show, achievements, *args):
 
 
 def game_on(level, achievements, all_sprites, boy, girl, tiles, fire_crystal, water_crystal, water_ponds, fire_ponds, boy_door, girl_door):
+    pygame.mouse.set_visible(0)
     clock = pygame.time.Clock()
     while True:
+        ticks = pygame.time.get_ticks()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 close()
@@ -149,12 +152,14 @@ def game_on(level, achievements, all_sprites, boy, girl, tiles, fire_crystal, wa
             fail(level, achievements)
         if boy.indoor and girl.indoor:
             pygame.time.delay(1000)
-            victory(level, achievements, boy, girl)
+            victory(level, achievements, boy, girl, ticks)
+        pygame.display.flip()
         pygame.display.flip()
         clock.tick(FPS)
 
 
 def fail(level, achievements):
+    pygame.mouse.set_visible(1)
     im = pygame.image.load('data/game_over.png')
     im = pygame.transform.scale(im, WINDOW_SIZE)
     screen.blit(im, (0, 0))
