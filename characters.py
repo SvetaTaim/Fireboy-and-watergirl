@@ -41,8 +41,9 @@ class Fireboy(pygame.sprite.Sprite):
         self.live = True
         self.finish = False
         self.indoor = False
+        self.fire_count = 0
 
-    def update(self, tiles, fire_crystal, water_crystal, fire_count, water_count, water_ponds, fire_ponds, boy_door, girl_door):
+    def update(self, tiles, fire_crystal, water_crystal, water_ponds, fire_ponds, boy_door, girl_door):
         if self.right:
             self.deltax = SPEED
             if not self.jump:
@@ -74,11 +75,11 @@ class Fireboy(pygame.sprite.Sprite):
             self.deltay += GRAVITY
         self.ground = False
         self.rect.y += self.deltay
-        self.collide(0, self.deltay, tiles, fire_crystal, fire_count, water_ponds, boy_door)
+        self.collide(0, self.deltay, tiles, fire_crystal, water_ponds, boy_door)
         self.rect.x += self.deltax
-        self.collide(self.deltax, 0, tiles, fire_crystal, fire_count, water_ponds, boy_door)
+        self.collide(self.deltax, 0, tiles, fire_crystal, water_ponds, boy_door)
 
-    def collide(self, deltax, deltay, tiles, fire_crystal, fire_count, water_ponds, boy_door):
+    def collide(self, deltax, deltay, tiles, fire_crystal, water_ponds, boy_door):
         for tile in tiles:
             if pygame.sprite.collide_rect(self, tile):
                 if deltax > 0:
@@ -94,7 +95,7 @@ class Fireboy(pygame.sprite.Sprite):
                     self.deltay = 0
         for crystal in fire_crystal:
             if pygame.sprite.collide_mask(self, crystal):
-                fire_count += 1
+                self.fire_count += 1
                 crystal.kill()
         for pond in water_ponds:
             if pygame.sprite.collide_mask(self, pond):
@@ -130,8 +131,9 @@ class Watergirl(pygame.sprite.Sprite):
         self.live = True
         self.finish = False
         self.indoor = False
+        self.water_count = 0
 
-    def update(self, tiles, fire_crystal, water_crystal, fire_count, water_count, water_ponds, fire_ponds, boy_door, girl_door):
+    def update(self, tiles, fire_crystal, water_crystal, water_ponds, fire_ponds, boy_door, girl_door):
         if self.right:
             self.deltax = SPEED
             if not self.jump:
@@ -163,11 +165,11 @@ class Watergirl(pygame.sprite.Sprite):
             self.deltay += GRAVITY
         self.ground = False
         self.rect.y += self.deltay
-        self.collide(0, self.deltay, tiles, water_crystal, water_count, fire_ponds, girl_door)
+        self.collide(0, self.deltay, tiles, water_crystal, fire_ponds, girl_door)
         self.rect.x += self.deltax
-        self.collide(self.deltax, 0, tiles, water_crystal, water_count, fire_ponds, girl_door)
+        self.collide(self.deltax, 0, tiles, water_crystal, fire_ponds, girl_door)
 
-    def collide(self, deltax, deltay, tiles, water_crystal, water_count, fire_ponds, girl_door):
+    def collide(self, deltax, deltay, tiles, water_crystal, fire_ponds, girl_door):
         for tile in tiles:
             if pygame.sprite.collide_rect(self, tile):
                 if deltax > 0:
@@ -183,7 +185,7 @@ class Watergirl(pygame.sprite.Sprite):
                     self.deltay = 0
         for crystal in water_crystal:
             if pygame.sprite.collide_mask(self, crystal):
-                water_count += 1
+                self.water_count += 1
                 crystal.kill()
         for pond in fire_ponds:
             if pygame.sprite.collide_mask(self, pond):

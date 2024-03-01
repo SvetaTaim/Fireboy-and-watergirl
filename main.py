@@ -15,10 +15,10 @@ def start_window():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if 248 <= event.pos[0] <= 360:
                     if 315 <= event.pos[1] < 370:
-                        main_window()
+                        levels_window()
 
 
-def main_window():
+def levels_window():
     im = pygame.image.load('data/select_level.png')
     im = pygame.transform.scale(im, WINDOW_SIZE)
     screen.blit(im, (0, 0))
@@ -46,8 +46,6 @@ def change_level(level):
     girl_door = pygame.sprite.Group()
     water_ponds = pygame.sprite.Group()
     fire_ponds = pygame.sprite.Group()
-    fire_count = 0
-    water_count = 0
     fb_wg = Fireboy_and_Watergirl(level)
     coor = fb_wg.render(screen_back, tiles, fire_crystal, water_crystal, boy_door, girl_door, water_ponds, fire_ponds)
     tiles.draw(screen_back)
@@ -61,10 +59,10 @@ def change_level(level):
     all_sprites.add(fire_ponds)
     all_sprites.add(girl)
     all_sprites.add(boy)
-    game_on(level, all_sprites, boy, girl, tiles, fire_crystal, water_crystal, fire_count, water_count, water_ponds, fire_ponds, boy_door, girl_door)
+    game_on(level, all_sprites, boy, girl, tiles, fire_crystal, water_crystal, water_ponds, fire_ponds, boy_door, girl_door)
 
 
-def victory(level):
+def victory(level, boy, girl):
     im = pygame.image.load('data/victory.png')
     im = pygame.transform.scale(im, WINDOW_SIZE)
     screen.blit(im, (0, 0))
@@ -75,14 +73,28 @@ def victory(level):
                 close()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if 270 <= event.pos[1] < 370 and (230 <= event.pos[0] < 420 or 260 <= event.pos[0] < 395):
-                    main_window()
+                    levels_window()
                 elif 200 <= event.pos[0] < 445 and 410 <= event.pos[1] < 445:
                     change_level(level)
 
 
+def records(level, boy, girl, time, show=False):
+    records[level] = time, boy.fire_count + girl.water_count
+    if show:
+        im = pygame.image.load('data/records.png')
+        im = pygame.transform.scale(im, WINDOW_SIZE)
+        screen.blit(im, (0, 0))
+        pygame.display.update()
+        while True:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    close()
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    if 270 <= event.pos[1] < 370 and (230 <= event.pos[0] < 420 or 260 <= event.pos[0] < 395):
+                        levels_window()
 
 
-def game_on(level, all_sprites, boy, girl, tiles, fire_crystal, water_crystal, fire_count, water_count, water_ponds, fire_ponds, boy_door, girl_door):
+def game_on(level, all_sprites, boy, girl, tiles, fire_crystal, water_crystal, water_ponds, fire_ponds, boy_door, girl_door):
     clock = pygame.time.Clock()
     while True:
         for event in pygame.event.get():
@@ -118,20 +130,20 @@ def game_on(level, all_sprites, boy, girl, tiles, fire_crystal, water_crystal, f
                         girl.jump = False
         screen.fill((0, 0, 0))
         screen.blit(screen_back, (0, 0))
-        all_sprites.update(tiles, fire_crystal, water_crystal, fire_count, water_count, water_ponds, fire_ponds, boy_door, girl_door)
+        all_sprites.update(tiles, fire_crystal, water_crystal, water_ponds, fire_ponds, boy_door, girl_door)
         all_sprites.draw(screen)
         if not boy.live or not girl.live:
             pygame.time.delay(1000)
             fail(level)
         if boy.indoor and girl.indoor:
             pygame.time.delay(1000)
-            victory(level)
+            victory(level, boy, girl)
         pygame.display.flip()
         clock.tick(FPS)
 
 
 def fail(level):
-    im = pygame.image.load('data/victory.png')
+    im = pygame.image.load('data/game_over.png')
     im = pygame.transform.scale(im, WINDOW_SIZE)
     screen.blit(im, (0, 0))
     pygame.display.update()
@@ -141,7 +153,7 @@ def fail(level):
                 close()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if 270 <= event.pos[1] < 370 and (230 <= event.pos[0] < 420 or 260 <= event.pos[0] < 395):
-                    main_window()
+                    levels_window()
                 elif 200 <= event.pos[0] < 445 and 410 <= event.pos[1] < 445:
                     change_level(level)
 
