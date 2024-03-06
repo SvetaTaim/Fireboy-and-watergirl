@@ -32,12 +32,12 @@ def levels_window(achievements):
             if event.type == pygame.QUIT:
                 close()
             if event.type == pygame.MOUSEBUTTONDOWN:
-                if 128 <= event.pos[0] <= 480:
-                    if 224 <= event.pos[1] < 320:
+                if 190 <= event.pos[0] <= 425:
+                    if 200 <= event.pos[1] < 240:
                         change_level(1, achievements)
-                    elif 320 <= event.pos[1] < 416:
+                    elif 340 <= event.pos[1] < 380:
                         change_level(2, achievements)
-                    elif 416 <= event.pos[1] <= 512:
+                    elif 480 <= event.pos[1] <= 520:
                         change_level(3, achievements)
 
 
@@ -89,7 +89,7 @@ def records(show, achievements, *args):
         level, boy, girl, ticks = args
         if level not in achievements.keys():
             achievements[level] = [ticks, boy.fire_count + girl.water_count]
-        elif ticks < achievements[0] and boy.fire_count + girl.water_count >= achievements[level][1]:
+        elif ticks < achievements[level][0] and boy.fire_count + girl.water_count >= achievements[level][1]:
             achievements[level] = [ticks, boy.fire_count + girl.water_count]
     if show:
         create_list(achievements)
