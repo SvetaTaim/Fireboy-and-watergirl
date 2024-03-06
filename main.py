@@ -180,6 +180,8 @@ def close():
 
 if __name__ == '__main__':
     pygame.init()
+    pygame.mixer.music.load('data/music.mp3')
+    pygame.mixer.music.play(loops=-1)
     screen = pygame.display.set_mode(WINDOW_SIZE)
     screen_back = pygame.Surface(WINDOW_SIZE)
     pygame.display.set_caption('Огонь и вода')
